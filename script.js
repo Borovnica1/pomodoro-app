@@ -3,16 +3,26 @@ const downArrows = document.querySelectorAll('.form-default__arrow--down');
 const body = document.querySelector('body');
 const modesButtons = document.querySelectorAll('.modes > button');
 const modes = document.querySelector('.modes');
+const settings = document.querySelector('.settings');
 const settingsIcon = document.querySelector('.settings-icon');
 const settingIconPath = document.querySelector('.settings-icon > path');
 const clockTime = document.querySelector('.clock__time');
 const startPause = document.querySelector('.clock__play-pause');
+const settingsOverlay = document.querySelector('.settings-overlay');
+const closeIcon = document.querySelector('.close-icon');
+const applyBtn = document.querySelector('.apply');
+const fontsOptions = document.querySelectorAll('.fonts > .selection-range > *');
+const colorsOptions = document.querySelectorAll('.colors > .selection-range > *');
+
+const pomodoroInput = document.querySelector('.pomodoro-input');
+const shortBreakInput = document.querySelector('.short-break-input');
+const longBreakInput = document.querySelector('.long-break-input');
 
 let pomodoroTime = 25;
-let shortTime = 10;
-let longTime = 55;
-let timeLeft = 10;
-let timeFull = 10;
+let shortTime = 5;
+let longTime = 15;
+let timeLeft = 25*60;
+let timeFull = 25*60;
 let timeInterval;
 
 let currColor = window.getComputedStyle(modesButtons[0]).backgroundColor || 'blue';
@@ -94,13 +104,71 @@ function pauseTime() {
   startPause.textContent = 'start';
   timeLeft = clockTime.textContent.split(':');
   timeLeft = Number(timeLeft[0])*60 + Number(timeLeft[1]);
-  console.log('TIME LEFT JE:', timeLeft);
 
   clearInterval(timeInterval);
 };
 
 function openSettings() {
-  
+  settingsOverlay.classList.add('settings--active');
+};
+
+function closeSettings() {
+  settingsOverlay.classList.remove('settings--active');
+};
+
+function checkIfClickedOnOverlay(e) {
+  if (e.target.classList.contains('settings-overlay')) closeSettings();
+};
+
+function switchFont() {
+  for (let option of fontsOptions) {
+    option.classList.remove('fonts--active');
+  };
+  this.classList.add('fonts--active');
+  changeFontColor()
+};
+
+function switchColor() {
+  for (let option of colorsOptions) {
+    option.classList.remove('colors--active');
+  };
+  this.classList.add('colors--active');
+  changeFontColor();
+  let mode;
+  for (let btn of modesButtons) {
+    if (btn.classList.contains('mode--active')) mode = btn;
+  };
+  currColor = window.getComputedStyle(mode).backgroundColor;
+  context.strokeStyle = currColor;
+};
+
+function applySettings() {
+  let timeChanged = false;
+  const times = [pomodoroTime, shortTime, longTime];
+  const newTimes = [pomodoroInput.value, shortBreakInput.value, longBreakInput.value];
+  for (let i = 0; i < times.length; i++) {
+    if (times[i] !== Number(newTimes[i])) timeChanged = true;
+  };
+  pomodoroTime = Number(pomodoroInput.value)
+  shortTime = Number(shortBreakInput.value);
+  longTime = Number(longBreakInput.value);
+
+  let mode;
+  for (let btn of modesButtons) {
+    if (btn.classList.contains('mode--active')) mode = btn;
+  };
+  if (timeChanged) switchMode.call(mode);
+  closeSettings();
+};
+
+function changeFontColor() {
+  const fontIndex = Array.from(fontsOptions).findIndex(option => option.classList.contains('fonts--active'));
+  const colorIndex = Array.from(colorsOptions).findIndex(option => option.classList.contains('colors--active'));
+  Array.from(body.classList).forEach(c => {
+    body.classList.remove(c)
+  }); 
+  body.classList.add(`font-${fontIndex+1}`); 
+  body.classList.add(`color-${colorIndex+1}`); 
 };
 
 for (let arrow of upArrows) {
@@ -118,6 +186,17 @@ for (let btn of modesButtons) {
 startPause.addEventListener('click', toggleStartPause);
 
 settingsIcon.addEventListener('click', openSettings);
+settingsOverlay.addEventListener('click', checkIfClickedOnOverlay);
+closeIcon.addEventListener('click', closeSettings);
+applyBtn.addEventListener('click', applySettings);
+
+for (let option of fontsOptions) {
+  option.addEventListener('click', switchFont);
+};
+for (let option of colorsOptions) {
+  option.addEventListener('click', switchColor);
+};
+
 
 
 var canvas = document.getElementById("canvas");
@@ -141,7 +220,6 @@ var grad = ctx.createLinearGradient(canvasOuter.width/3, canvasOuter.width/3, ca
 grad.addColorStop(0, shadowColor);
 grad.addColorStop(1, grayColor);
 ctx.lineCap = 'round';
-console.log('IDEMO', canvasOuter.width);
 ctx.arc(canvasOuter.width/2, canvasOuter.width/2, canvasOuter.width/2-12, 0, Math.PI * 2, true);
 //ctx.arc(75, 75, 40, 0, endAngle, counterclockwise);
 ctx.lineWidth = 23;
