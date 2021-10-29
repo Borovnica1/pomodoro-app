@@ -13,6 +13,9 @@ const closeIcon = document.querySelector('.close-icon');
 const applyBtn = document.querySelector('.apply');
 const fontsOptions = document.querySelectorAll('.fonts > .selection-range > *');
 const colorsOptions = document.querySelectorAll('.colors > .selection-range > *');
+const clock = document.querySelector('.clock');
+
+
 
 const pomodoroInput = document.querySelector('.pomodoro-input');
 const shortBreakInput = document.querySelector('.short-break-input');
@@ -198,40 +201,62 @@ for (let option of colorsOptions) {
 };
 
 
+ 
+
+
 
 var canvas = document.getElementById("canvas");
 canvas.style.transform = 'rotate(-90deg)'
 var context = canvas.getContext("2d");
-canvas.width = '480';
-canvas.height = '480';
-context.lineCap = 'round';
+canvas.width = clock.clientWidth;
+canvas.height = clock.clientWidth;
+
 
 //ctx.arc(75, 75, 40, 0, endAngle, counterclockwise);
-context.lineWidth = 15;
 
 context.strokeStyle = currColor;
 
 
 var canvasOuter = document.getElementById("canvas-outer");
 var ctx = canvasOuter.getContext("2d");
-canvasOuter.width = '480';
-canvasOuter.height = '480';
+canvasOuter.width = clock.clientWidth;
+canvasOuter.height = clock.clientWidth;
 var grad = ctx.createLinearGradient(canvasOuter.width/3, canvasOuter.width/3, canvasOuter.width*4, canvasOuter.width*4);
 grad.addColorStop(0, shadowColor);
 grad.addColorStop(1, grayColor);
-ctx.lineCap = 'round';
-ctx.arc(canvasOuter.width/2, canvasOuter.width/2, canvasOuter.width/2-12, 0, Math.PI * 2, true);
 //ctx.arc(75, 75, 40, 0, endAngle, counterclockwise);
-ctx.lineWidth = 23;
-
-ctx.strokeStyle = grad;
-ctx.stroke();
 
 
 
 
 canvas.style.position = 'absolute';
 canvasOuter.style.position = 'absolute';
+
+function clockSizeChanged() {
+  canvas.width = clock.clientWidth;
+  canvas.height = clock.clientWidth;
+  canvasOuter.width = clock.clientWidth;
+  canvasOuter.height = clock.clientWidth;
+  context.beginPath();
+
+  context.strokeStyle = currColor;
+  context.lineWidth = 15;
+  context.lineCap = 'round';
+  ctx.lineWidth = 23;
+  ctx.strokeStyle = grad;
+  ctx.lineCap = 'round';
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.stroke();
+
+  ctx.arc(canvasOuter.width/2, canvasOuter.width/2, canvasOuter.width/2-12, 0, Math.PI * 2, true);
+  ctx.stroke();
+};
+
+clockSizeChanged();
+
+new ResizeObserver(clockSizeChanged).observe(clock);
+
 
 /* const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
