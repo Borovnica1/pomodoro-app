@@ -2,6 +2,7 @@
   padding: 0%;
   margin: 0%;
   box-sizing: border-box;
+  user-select: none;
 }
 
 :root {
@@ -27,7 +28,7 @@
   
   --font-1: 'Kumbh Sans', sans-serif;
   --font-2: 'Roboto Slab', serif;
-  --font-3: monospace;
+  --font-3: 'Space Mono', monospace;
 }
 
 body {
@@ -84,7 +85,7 @@ p {
 }
 
 button {
-  padding: 1.2rem 2.4rem;
+  padding: 0.9rem 1.8rem;
   background-color: rgb(var(--main-color));
   font-weight: bold;
   color: rgb(var(--white-color));
@@ -164,4 +165,73 @@ input[type=number]::-webkit-inner-spin-button {
 
 .selection-range > span:hover > .selection-range__circle {
   display: inline-block;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container > * {
+  margin-top: 50px;
+}
+
+.modes {
+  padding: 10px;
+  border-radius: 50px;
+  background-color: rgb(var(--shadow-color));
+}
+
+.modes > button {
+  background-color: transparent;
+  color: rgb(var(--font-color));
+  opacity: .7;
+}
+
+.modes > button:hover {
+  opacity: 1;
+}
+
+.modes .mode--active {
+  color: rgb(var(--shadow-color));
+  background-color: rgb(var(--main-color));
+  opacity: 1;
+}
+
+.clock {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  background-color: rgb(var(--shadow-color));
+  border-radius: 50%;
+}
+
+.clock__time {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 110px;
+}
+
+.clock__play-pause {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.clock__play-pause:hover {
+  color: rgb(var(--main-color));
+}
+
+.settings-icon {
+  cursor: pointer;
+}
+
+.settings-icon:hover > path {
+  opacity: 1;
 }
