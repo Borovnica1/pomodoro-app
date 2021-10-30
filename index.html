@@ -12,9 +12,122 @@
     />
 
     <title>Pomodoro app</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&family=Roboto+Slab:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
   </head>
-  <body>
-    pomodoro short break long break start pause restart Settings Time (minutes)
-    pomodoro short break long break Font Color Apply
+  <body class="color-1 font-1">
+
+    <div class="container">
+      <div class="settings-overlay">
+        <div class="settings">
+          <header>
+            <h2>Settings</h2>
+            <div class="close-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"><path fill="#1E213F" fill-rule="evenodd" d="M11.95.636l1.414 1.414L8.414 7l4.95 4.95-1.414 1.414L7 8.414l-4.95 4.95L.636 11.95 5.586 7 .636 2.05 2.05.636 7 5.586l4.95-4.95z" opacity=".5"/></svg>
+            </div>
+          </header>
+  
+                    
+          <div class="input-div">
+            <h3>time (minutes)</h3>
+            <div class="input-groups">
+              <div class="input-group">
+                <label for="pomodoro">pomodoro</label>
+                <button class="form-default">
+                  <input class="pomodoro-input" type="number" name="pomodoro" value="25">
+                  <svg class="form-default__arrow form-default__arrow--down" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 1l6 4 6-4"/></svg>
+                  <svg class="form-default__arrow form-default__arrow--up" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 6l6-4 6 4"/></svg>
+                </button>
+              </div>
+              <div class="input-group">
+                <label for="short-break">short break</label>
+                <button class="form-default">
+                  <input class="short-break-input" type="number" name="short-break" value="5">
+                  <svg class="form-default__arrow form-default__arrow--down" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 1l6 4 6-4"/></svg>
+                  <svg class="form-default__arrow form-default__arrow--up" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 6l6-4 6 4"/></svg>
+                </button>
+              </div>
+              <div class="input-group">
+                <label for="long-break">long break</label>
+                <button class="form-default">
+                  <input class="long-break-input" type="number" name="long-break" value="15">
+                  <svg class="form-default__arrow form-default__arrow--down" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 1l6 4 6-4"/></svg>
+                  <svg class="form-default__arrow form-default__arrow--up" xmlns="http://www.w3.org/2000/svg" width="14" height="7"><path fill="none" stroke="#1E213F" stroke-opacity=".25" stroke-width="2" d="M1 6l6-4 6 4"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+  
+          <div class="fonts range-select">
+            <h3>font</h3>
+            <div class="selection-range">
+              <span class="fonts--active">Aa
+                <div class="selection-range__circle"></div>
+              </span>
+              <span class="">Aa
+                <div class="selection-range__circle"></div>
+              </span>
+              <span class="">Aa
+                <div class="selection-range__circle"></div>
+              </span>
+            </div>
+          </div>
+  
+          <div class="colors range-select">
+            <h3>color</h3>
+            <div class="selection-range">
+              <span class="colors--active">
+                <span class="checkmark">
+                  <div class="checkmark_stem"></div>
+                  <div class="checkmark_kick"></div>
+                </span>
+                <div class="selection-range__circle"></div>
+              </span>
+              <span class="">
+                <span class="checkmark">
+                  <div class="checkmark_stem"></div>
+                  <div class="checkmark_kick"></div>
+                </span>
+                <div class="selection-range__circle"></div>
+              </span>
+              <span class="">
+                <span class="checkmark">
+                  <div class="checkmark_stem"></div>
+                  <div class="checkmark_kick"></div>
+                </span>
+                <div class="selection-range__circle"></div>
+              </span>
+            </div>
+          </div>
+  
+          <button class="apply">Apply</button>
+        </div>
+      </div>
+
+      <img src="assets/logo.svg" alt="Logo">
+
+      <div class="modes">
+        <button class="mode--active">pomodoro</button>
+        <button>short break</button>
+        <button>long break</button>
+      </div>
+
+      <div class="clock">
+        <canvas id="canvas" width="800" height="800"></canvas>
+        <canvas id="canvas-outer" width="800" height="800"></canvas>
+
+        <h2 class="clock__time">25:00</h2>
+        <h3 class="clock__play-pause">start</h3>
+      </div>
+      
+      <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28"><path fill="#D7E0FF" d="M26.965 17.682l-2.927-2.317c.055-.448.097-.903.097-1.365 0-.462-.042-.917-.097-1.365l2.934-2.317a.702.702 0 00.167-.896l-2.775-4.851a.683.683 0 00-.847-.301l-3.454 1.407a10.506 10.506 0 00-2.345-1.379l-.52-3.71A.716.716 0 0016.503 0h-5.55a.703.703 0 00-.687.588l-.52 3.71c-.847.357-1.63.819-2.345 1.379L3.947 4.27a.691.691 0 00-.847.301L.325 9.422a.705.705 0 00.167.896l2.927 2.317c-.055.448-.097.903-.097 1.365 0 .462.042.917.097 1.365L.492 17.682a.702.702 0 00-.167.896L3.1 23.429a.683.683 0 00.847.301L7.4 22.323a10.506 10.506 0 002.345 1.379l.52 3.71c.056.329.34.588.687.588h5.55a.703.703 0 00.687-.588l.52-3.71c.847-.357 1.631-.819 2.346-1.379l3.454 1.407c.313.119.673 0 .847-.301l2.775-4.851a.705.705 0 00-.167-.896zM13.73 18.9c-2.685 0-4.857-2.191-4.857-4.9 0-2.709 2.172-4.9 4.857-4.9 2.684 0 4.856 2.191 4.856 4.9 0 2.71-2.172 4.9-4.856 4.9z" opacity=".5"/></svg>
+    </div>
+  </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
